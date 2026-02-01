@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Proposal</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #ff4d6d, #ff758f);
+        overflow: hidden;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        animation: pop 0.8s ease;
+    }
+
+    @keyframes pop {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+        color: #ff4d6d;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .buttons {
+        margin-top: 25px;
+        position: relative;
+        height: 140px;
+    }
+
+    button {
+        padding: 14px 28px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+    }
+
+    #yes {
+        background: #ff4d6d;
+        color: white;
+    }
+
+    #no {
+        background: #ccc;
+        color: black;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .hearts span {
+        position: fixed;
+        bottom: -20px;
+        font-size: 22px;
+        animation: float 6s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes float {
+        from { transform: translateY(0); opacity: 1; }
+        to { transform: translateY(-100vh); opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+    <h1>Yemsrach ❤️</h1>
+    <p>Will you be my Valentine?</p>
+
+    <div class="buttons">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 🙈</button>
+    </div>
+</div>
+
+<div class="hearts"></div>
+
+<script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const card = document.getElementById("card");
+    const heartsContainer = document.querySelector(".hearts");
+
+    function moveNo() {
+        const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+        const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    // Mobile + desktop support
+    noBtn.addEventListener("touchstart", moveNo);
+    noBtn.addEventListener("mouseover", moveNo);
+
+    yesBtn.addEventListener("click", () => {
+        card.innerHTML = `
+            <h1>Yay!!! 💘</h1>
+            <p>You just made me the happiest person ❤️</p>
+            <p>Forever yours,</p>
+            <p><strong>Daniel</strong></p>
+        `;
+    });
+
+    // Floating hearts animation
+    setInterval(() => {
+        const heart = document.createElement("span");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 7000);
+    }, 500);
+</script>
+
+</body>
+</html>

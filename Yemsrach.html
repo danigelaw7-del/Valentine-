@@ -19,13 +19,14 @@
 
     .card {
         background: white;
-        padding: 30px;
+        padding: 30px 20px 40px;
         border-radius: 20px;
         text-align: center;
         width: 90%;
         max-width: 400px;
         box-shadow: 0 20px 40px rgba(0,0,0,0.25);
         animation: pop 0.8s ease;
+        position: relative;
     }
 
     @keyframes pop {
@@ -40,34 +41,34 @@
 
     p {
         font-size: 18px;
-        margin: 10px 0;
-    }
-
-    .buttons {
-        margin-top: 25px;
-        position: relative;
-        height: 140px;
-    }
-
-    button {
-        padding: 14px 28px;
-        font-size: 16px;
-        border-radius: 30px;
-        border: none;
-        cursor: pointer;
+        margin-bottom: 25px;
     }
 
     #yes {
+        padding: 14px 30px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: none;
         background: #ff4d6d;
         color: white;
+        cursor: pointer;
+        z-index: 5;
+        position: relative;
     }
 
     #no {
+        padding: 14px 30px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: none;
         background: #ccc;
         color: black;
-        position: absolute;
+        cursor: pointer;
+        position: fixed; /* IMPORTANT */
+        top: 60%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
+        z-index: 10;
     }
 
     .hearts span {
@@ -91,11 +92,10 @@
     <h1>Yemsrach ❤️</h1>
     <p>Will you be my Valentine?</p>
 
-    <div class="buttons">
-        <button id="yes">Yes 💖</button>
-        <button id="no">No 🙈</button>
-    </div>
+    <button id="yes">Yes 💖</button>
 </div>
+
+<button id="no">No 🙈</button>
 
 <div class="hearts"></div>
 
@@ -106,8 +106,9 @@
     const heartsContainer = document.querySelector(".hearts");
 
     function moveNo() {
-        const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-        const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+        const padding = 20;
+        const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+        const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
         const x = Math.random() * maxX;
         const y = Math.random() * maxY;
@@ -116,27 +117,26 @@
         noBtn.style.top = y + "px";
     }
 
-    // Mobile + desktop support
+    // Mobile + desktop
     noBtn.addEventListener("touchstart", moveNo);
     noBtn.addEventListener("mouseover", moveNo);
 
     yesBtn.addEventListener("click", () => {
+        noBtn.style.display = "none";
         card.innerHTML = `
             <h1>Yay!!! 💘</h1>
             <p>You just made me the happiest person ❤️</p>
-            <p>Forever yours,</p>
-            <p><strong>Daniel</strong></p>
+            <p>Forever yours,<br><strong>Daniel</strong></p>
         `;
     });
 
-    // Floating hearts animation
+    // Floating hearts
     setInterval(() => {
         const heart = document.createElement("span");
         heart.innerHTML = "❤️";
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.animationDuration = (4 + Math.random() * 3) + "s";
         heartsContainer.appendChild(heart);
-
         setTimeout(() => heart.remove(), 7000);
     }, 500);
 </script>

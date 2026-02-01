@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Proposal</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff4d6d, #ff758f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 30px 20px 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    animation: pop 0.8s ease;
+    position: relative;
+    z-index: 5;
+}
+
+@keyframes pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+h1 {
+    color: #ff4d6d;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+#yes {
+    padding: 14px 32px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+}
+
+#no {
+    padding: 14px 32px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    background: #ccc;
+    color: black;
+    cursor: pointer;
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+/* Hearts */
+.hearts span {
+    position: fixed;
+    bottom: -20px;
+    font-size: 22px;
+    animation: float 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+img {
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- CC0 music chosen: "Spring Field" (CC0) source: https://www.chosic.com/wp-content/uploads/2021/07/Spring-Field.mp3 -->
+<audio id="music" loop>
+    <source src="assets/music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<div class="card" id="card">
+    <h1>Yemsrach ❤️</h1>
+    <p><strong>Will you be my Valentine?</strong></p>
+    <p><strong>የኔ ቫለንታይን ትሆኚኛለሽ?</strong></p>
+
+    <button id="yes">Yes 💖 / አዎ ❤️</button>
+</div>
+
+<button id="no">No 🙈 / አይ 😅</button>
+
+<div class="hearts"></div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const card = document.getElementById("card");
+const heartsContainer = document.querySelector(".hearts");
+const music = document.getElementById("music");
+
+function moveNo() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+}
+
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
+
+yesBtn.addEventListener("click", () => {
+    // start music on user gesture
+    music.play().catch(() => {/* ignore play errors */});
+    noBtn.style.display = "none";
+
+    card.innerHTML = `
+    <h1>Yay! ❤️</h1>
+    <p><strong>I knew you’d say yes!</strong></p>
+    <p>
+        guess what 😄<br>
+        no one is gonna call you<br>
+        <strong>“ቆሞ ቀር”</strong><br>
+        ከዚህ በውሀላ::
+    </p>
+    <p><strong>ቃል ቃል እንዳታፈርሽ 💖</strong></p>
+    <img src="assets/photo.jpg" alt="Us together">
+    <p>— <strong>Daniel</strong></p>
+`;
+
+    startConfetti();
+});
+
+// Floating hearts
+setInterval(() => {
+    const heart = document.createElement("span");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+    heartsContainer.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+}, 500);
+
+// Confetti effect
+function startConfetti() {
+    for (let i = 0; i < 80; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        c.style.animationDuration = (3 + Math.random() * 2) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5000);
+    }
+}
+</script>
+
+</body>
+</html>
